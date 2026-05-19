@@ -1,3 +1,4 @@
+use crate::ax_reader::DeepContext;
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 use std::sync::Mutex;
@@ -17,6 +18,7 @@ pub struct ClickableItem {
     pub id: String,
     pub label: String,
     pub app_name: String,
+    pub source_type: String,
     pub is_stale: bool,
 }
 
@@ -24,7 +26,7 @@ pub struct ClickableItem {
 pub struct OverlayContent {
     pub markdown: String,
     pub items: Vec<ClickableItem>,
-    pub gemini_summary: Option<String>,
+    pub context_enabled: bool,
 }
 
 impl Default for OverlayContent {
@@ -32,7 +34,7 @@ impl Default for OverlayContent {
         Self {
             markdown: String::from("Scanning windows..."),
             items: Vec::new(),
-            gemini_summary: None,
+            context_enabled: false,
         }
     }
 }
@@ -50,10 +52,11 @@ pub struct AppState {
     pub cached_content: OverlayContent,
     pub gemini_api_key: Option<String>,
     pub overlay_visible: bool,
-    /// Rolling history of recently seen activities (kept for 5 min)
+    pub is_polling: bool,
     pub activity_history: VecDeque<ActivityRecord>,
-    /// All window titles ever seen this session, for Gemini context
     pub title_history: VecDeque<String>,
+    pub deep_context: Option<DeepContext>,
+    pub context_enabled: bool,
 }
 
 impl Default for AppState {
@@ -64,8 +67,11 @@ impl Default for AppState {
             cached_content: OverlayContent::default(),
             gemini_api_key: std::env::var("CONTEXT_GEMINI_API_KEY").ok(),
             overlay_visible: false,
+            is_polling: false,
             activity_history: VecDeque::new(),
             title_history: VecDeque::with_capacity(100),
+            deep_context: None,
+            context_enabled: false,
         }
     }
 }

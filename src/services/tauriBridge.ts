@@ -12,3 +12,7 @@ export async function focusWindow(appName: string): Promise<void> {
 export async function dismissOverlay(): Promise<void> {
   return invoke("dismiss_overlay");
 }
+
+export async function toggleContext(): Promise<boolean> {
+  return invoke<boolean>("toggle_context");
+}

@@ -27,12 +27,6 @@ export function ActivityList({ content }: Props) {
           ))}
         </>
       )}
-
-      {content.gemini_summary && (
-        <div className="gemini-section">
-          <div className="gemini-text">{content.gemini_summary}</div>
-        </div>
-      )}
     </div>
   );
 }

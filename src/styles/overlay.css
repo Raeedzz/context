@@ -4,12 +4,22 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html, body {
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
+  background: none !important;
+  background-color: transparent !important;
   font-family: 'Roboto Mono', monospace;
   overflow: hidden;
+  pointer-events: none;
+}
+
+#root {
+  width: 0;
+  height: 0;
+  overflow: visible;
   pointer-events: none;
 }
 
@@ -18,19 +28,17 @@ html, body, #root {
   pointer-events: auto;
   width: 380px;
   max-height: 480px;
-  background: rgba(15, 15, 20, 0.55);
-  backdrop-filter: blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(15, 15, 20, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
   padding: 20px;
   color: #e0e0e0;
   overflow-y: auto;
   animation: fadeIn 200ms ease-out;
-  position: absolute;
-  top: 8px;
-  right: 8px;
+  position: fixed;
+  top: 0;
+  right: 0;
 }
 
 @keyframes fadeIn {
@@ -50,29 +58,6 @@ html, body, #root {
 .overlay-card::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
-}
-
-/* Header */
-.overlay-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.overlay-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 0.5px;
-}
-
-.overlay-hint {
-  font-size: 10px;
-  color: #666;
-  letter-spacing: 0.3px;
 }
 
 /* Activity list */
@@ -135,24 +120,107 @@ html, body, #root {
   margin-bottom: 2px;
 }
 
+/* Source type colors */
+.activity-item[data-source="terminal"] .activity-label {
+  color: #4ec9b0;
+  text-decoration-color: rgba(78, 201, 176, 0.3);
+}
+
+.activity-item[data-source="terminal"]:hover .activity-label {
+  text-decoration-color: rgba(78, 201, 176, 0.7);
+}
+
+.activity-item[data-source="browser"] .activity-label {
+  color: #569cd6;
+  text-decoration-color: rgba(86, 156, 214, 0.3);
+}
+
+.activity-item[data-source="browser"]:hover .activity-label {
+  text-decoration-color: rgba(86, 156, 214, 0.7);
+}
+
+.activity-item[data-source="editor"] .activity-label {
+  color: #dcdcaa;
+  text-decoration-color: rgba(220, 220, 170, 0.3);
+}
+
+.activity-item[data-source="editor"]:hover .activity-label {
+  text-decoration-color: rgba(220, 220, 170, 0.7);
+}
+
+.activity-item[data-source="chat"] .activity-label {
+  color: #c586c0;
+  text-decoration-color: rgba(197, 134, 192, 0.3);
+}
+
+.activity-item[data-source="chat"]:hover .activity-label {
+  text-decoration-color: rgba(197, 134, 192, 0.7);
+}
+
+/* Stale items keep muted colors regardless of source */
+.activity-item.stale .activity-label {
+  color: #666 !important;
+  text-decoration-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.activity-item.stale:hover .activity-label {
+  color: #999 !important;
+  text-decoration-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Context toggle */
+.context-toggle-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.context-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  transition: all 150ms ease;
+  pointer-events: auto;
+}
+
+.context-toggle.off {
+  color: #666;
+}
+
+.context-toggle.off:hover {
+  color: #999;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.context-toggle.on {
+  color: #4ec9b0;
+  border-color: rgba(78, 201, 176, 0.3);
+}
+
+.context-toggle.on:hover {
+  border-color: rgba(78, 201, 176, 0.5);
+}
+
+.toggle-icon {
+  font-size: 12px;
+}
+
+.toggle-label {
+  text-transform: uppercase;
+}
+
 /* Empty state */
 .empty-message {
   font-size: 12px;
   color: #777;
   line-height: 1.6;
   font-style: italic;
-}
-
-/* Gemini section */
-.gemini-section {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.gemini-text {
-  font-size: 11px;
-  font-style: italic;
-  color: #777;
-  line-height: 1.6;
 }

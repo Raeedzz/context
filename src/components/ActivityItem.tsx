@@ -13,6 +13,7 @@ export function ActivityItem({ item }: Props) {
   return (
     <button
       className={`activity-item ${item.is_stale ? "stale" : ""}`}
+      data-source={item.source_type}
       onClick={handleClick}
     >
       <span className="activity-label">{item.label}</span>

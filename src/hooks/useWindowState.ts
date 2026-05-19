@@ -6,18 +6,19 @@ export function useWindowState() {
   const [content, setContent] = useState<OverlayContent>({
     markdown: "*Scanning windows...*",
     items: [],
-    gemini_summary: null,
+    context_enabled: false,
   });
-  const lastMarkdown = useRef("");
+  const lastHash = useRef("");
 
   useEffect(() => {
     const poll = async () => {
       try {
         const data = await getOverlayContent();
-        // Only update if content actually changed to prevent unnecessary re-renders
-        const combined = data.markdown + (data.gemini_summary ?? "");
-        if (combined !== lastMarkdown.current) {
-          lastMarkdown.current = combined;
+        const hash =
+          data.markdown +
+          data.items.map((i) => i.id + i.label).join("");
+        if (hash !== lastHash.current) {
+          lastHash.current = hash;
           setContent(data);
         }
       } catch {
